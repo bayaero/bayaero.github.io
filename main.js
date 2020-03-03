@@ -1,32 +1,14 @@
-var data = loadJSON("https://github.com/bayaero/bayaero.github.io/blob/master/hours.json");
-var date = new Date();
+var url = "https://raw.githubusercontent.com/bayaero/bayaero.github.io/master/hours.json";
 
-function loadJSON(filePath) {
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", filePath, false);
-  if (xmlhttp.overrideMimeType) {
-    xmlhttp.overrideMimeType("application/json");
-  }
-  xmlhttp.send();
-  if (xmlhttp.status==200) {
-    return xmlhttp.responseText;
-  } else {
-    return null;
-  }
-  return JSON.parse(json);
-}
-
-function storeIsOpen() {
-  var hour = date.getHours();
-  console.log("Hour", hour);
-  var day = date.getDay();
-  var hours = data["hours"];
-  for (var ind in hours) {
-    var d = hours[ind];
-	if (d["day"] == day) {
-      return (0 != d["open"] && 0 != d["close"] && hour >= data["open"] && hour < data["close"]);
-	}
-  }
+function isStoreOpen(date, hours) {
+  	var day = date.getDay();
+  	var hour = date.getHours();
+  	for (var ind in hours) {
+    	var d = hours[ind];
+		if (d["day"] == day) {
+      	  return (0 != d["open"] && 0 != d["close"] && hour >= data["open"] && hour < data["close"]);
+		}
+  	}
 }
 
 function formatHour(hour) {
@@ -39,28 +21,46 @@ function formatHour(hour) {
 	}
 }
 
-document.getElementById("title").innerHTML = "<h3>" + data["title"] + "</h3>";
-var stat = storeIsOpen() ? data["open-message"] : data["closed-message"];
-document.getElementById("status").innerHTML = "<h1>" + stat + "</h1>";
-var opt = data["optional-message"];
-if (opt && opt.length) {
-	document.getElementById("message").innerHTML = "<i>" + opt + "</i>";
-}
-document.getElementById("footer").innerHTML = date.toLocaleString();
-
-document.write("<table border==\"1\"><tr>");
-var hours = data["hours"];
-for (var i = 0, end = hours.length; i < end; i++) {
-	document.write('<tr>');
-	if (0 != hours[i]["open"] && 0 != hours[i]["close"]) {
-		document.write('<td><b>' + hours[i]["day"] + '</b></td>');
-  		document.write('<td><b>' + formatHour(hours[i]["open"]) + '</b></td>');
-  		document.write('<td><b>' + formatHour(hours[i]["close"]) + '</b></td>');
-	} else {
-		document.write('<td>' + hours[i]["day"] + '</td>');
-  		document.write("<td>—</td>");
-  		document.write("<td>—</td>");
+function buildPage(data) {
+	var date = new Date();
+  	var hours = data["hours"];
+	var stat = isStoreOpen(date, hours) ? data["open-message"] : data["closed-message"];
+	var opt = data["optional-message"];
+	document.getElementById("title").innerHTML = "<h3>" + data["title"] + "</h3>";
+	document.getElementById("status").innerHTML = "<h1>" + stat + "</h1>";
+	if (opt && opt.length) {
+		document.getElementById("message").innerHTML = "<i>" + opt + "</i>";
 	}
-	document.write('</tr>');
+	document.getElementById("footer").innerHTML = date.toLocaleString();
+	
+	var table = "<table border==\"1\"><tr>";
+	for (var i = 0, end = hours.length; i < end; i++) {
+		table += "<tr>";
+		if (0 != hours[i]["open"] && 0 != hours[i]["close"]) {
+			table += "<td><b>" + hours[i]["day"] + "</b></td>";
+	  		table += "<td><b>" + formatHour(hours[i]["open"]) + "</b></td>";
+	  		table += "<td><b>" + formatHour(hours[i]["close"]) + "</b></td>";
+		} else {
+			table += "<td>" + hours[i]["day"] + "</td>";
+	  		table += "<td>—</td>";
+	  		table += "<td>—</td>";
+		}
+		table += "</tr>";
+	}
+	table += "</table>";
+	document.getElementById("hours").innerHTML = table;
 }
-document.write("</table>");
+
+function fetchAndBuildPage() {
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	        var data = JSON.parse(this.responseText);
+	        buildPage(data);
+	    }
+	};
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+}
+
+fetchAndBuildPage();
