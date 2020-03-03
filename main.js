@@ -1,68 +1,20 @@
-var data = {
-	"title": "Store (BA) Hours",
-	"open-message": "OPEN",
-	"closed-message": "CLOSED",
-	"optional-message": "All Pinarello are 50% next week! ;-)",
-	"hours": [
-		{
-			"day": "Monday",
-			"open": 14,
-			"close": 19
-		},
-		{
-			"day": "Tuesday",
-			"open": 14,
-			"close": 19
-		},
-		{
-			"day": "Wednesday",
-			"open": 14,
-			"close": 19
-		},
-		{
-			"day": "Thursday",
-			"open": 14,
-			"close": 19
-		},
-		{
-			"day": "Friday",
-			"open": 14,
-			"close": 19
-		},
-		{
-			"day": "Saturday",
-			"open": 13,
-			"close": 16
-		},
-		{
-			"day": "Sunday",
-			"open": 0,
-			"close": 0
-		},
-	],
-	"color-scheme": "automatic"
-};
-
-// ---------------------------------------------------------
-
-// function loadJSON(filePath) {
-//   var xmlhttp = new XMLHttpRequest();
-//   xmlhttp.open("GET", filePath, false);
-//   if (xmlhttp.overrideMimeType) {
-//     xmlhttp.overrideMimeType("application/json");
-//   }
-//   xmlhttp.send();
-//   if (xmlhttp.status==200) {
-//     return xmlhttp.responseText;
-//   } else {
-//     return null;
-//   }
-//   return JSON.parse(json);
-// }
-//
-// var json = loadJSON("http://localhost:8000/hours.json");
-
+var data = loadJSON("https://github.com/bayaero/bayaero.github.io/blob/master/hours.json");
 var date = new Date();
+
+function loadJSON(filePath) {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("GET", filePath, false);
+  if (xmlhttp.overrideMimeType) {
+    xmlhttp.overrideMimeType("application/json");
+  }
+  xmlhttp.send();
+  if (xmlhttp.status==200) {
+    return xmlhttp.responseText;
+  } else {
+    return null;
+  }
+  return JSON.parse(json);
+}
 
 function storeIsOpen() {
   var hour = date.getHours();

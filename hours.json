@@ -1,44 +1,44 @@
 {
+	"title": "Store (BA) Hours",
+	"open-message": "OPEN",
+	"closed-message": "CLOSED",
+	"optional-message": "All Pinarello are 50% next week! ;-)",
 	"hours": [
 		{
 			"day": "Monday",
-			"open": true,
-			"start": "2p",
-			"end": "7p"
+			"open": 14,
+			"close": 19
 		},
 		{
 			"day": "Tuesday",
-			"open": true,
-			"start": "2p",
-			"end": "7p"
+			"open": 14,
+			"close": 19
 		},
 		{
 			"day": "Wednesday",
-			"open": true,
-			"start": "2p",
-			"end": "8p"
+			"open": 14,
+			"close": 19
 		},
 		{
 			"day": "Thursday",
-			"open": true,
-			"start": "2p",
-			"end": "8p"
+			"open": 14,
+			"close": 19
 		},
 		{
 			"day": "Friday",
-			"open": true,
-			"start": "2p",
-			"end": "7p"
+			"open": 14,
+			"close": 19
 		},
 		{
 			"day": "Saturday",
-			"open": true,
-			"start": "1p",
-			"end": "4p"
+			"open": 13,
+			"close": 16
 		},
 		{
 			"day": "Sunday",
-			"open": false,
-		},
-	]
-}
+			"open": 0,
+			"close": 0
+		}
+	],
+	"color-scheme": "automatic"
+};
